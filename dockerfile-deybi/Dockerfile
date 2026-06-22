@@ -1,5 +1,5 @@
 # ====== FASE DE CONSTRUCCIÓN ======
-FROM maven:3.9-eclipse-temurin-25-alpine AS builder
+FROM deybpayco/maven:3.9-eclipse-temurin-25-alpine AS builder
 
 WORKDIR /app
 COPY pom.xml .
