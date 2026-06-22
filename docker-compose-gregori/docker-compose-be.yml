@@ -1,0 +1,28 @@
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ../  # Sube a la carpeta raíz ASE251S3_T01-be donde está tu pom.xml y src
+      dockerfile: dockerfile-gregori/Dockerfile # Ruta hacia tu Dockerfile
+    container_name: springboot-sqlserver
+    ports:
+      - "8085:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://sql-server:1433;databaseName=FARMAGRO_SA;encrypt=true;trustServerCertificate=true
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=Admin12345
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true
+
+# ── Comandos útiles ──────────────────────────────────────────────────────────
+# Construir y levantar:   docker compose -f docker-compose-be.yml up -d --build
+# Bajar:                  docker compose -f docker-compose-be.yml down
+# Ver logs:               docker logs springboot-sqlserver -f
+# Ver logs últimas 50:    docker logs springboot-sqlserver --tail 50

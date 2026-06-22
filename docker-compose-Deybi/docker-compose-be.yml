@@ -1,0 +1,27 @@
+# Levantar backend
+#docker compose -f docker-compose-be.yml up -d
+#Para apagar
+#docker compose -f docker-compose-be.yml down
+
+version: '3'
+
+services:
+  backend:
+    build:
+      context: ../
+      dockerfile: dockerfile-deybi/Dockerfile
+    container_name: springboot-sqlserver-deybi
+    ports:
+      - "8086:8080"
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://sql-server:1433;databaseName=FARMAGRO_SA;encrypt=true;trustServerCertificate=true
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=Admin12345
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=update
+    networks:
+      - my-network
+
+networks:
+  my-network:
+    external: true

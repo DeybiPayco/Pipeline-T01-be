@@ -1,0 +1,36 @@
+version: '3'
+
+services:
+  backend:
+    image: erickramoss/farmagro-backend:latest
+    container_name: springboot-sqlserver
+    ports:
+      - "8085:8080"
+    environment:
+      # ← Cambia la IP de la BD cuando uses una instancia diferente
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://52.5.121.14:1433;databaseName=FARMAGRO_SA;encrypt=true;trustServerCertificate=true
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=SqlPass_2026!
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      - APP_UPLOAD_DIR=/app/uploads/images/products
+    volumes:
+      - uploads_data:/app/uploads
+    networks:
+      - my-network
+
+volumes:
+  uploads_data:
+
+networks:
+  my-network:
+    external: true
+
+# ── Comandos útiles ──────────────────────────────────────────────────────────
+# Levantar:            docker compose -f docker-compose-be.yml up -d
+# Bajar:               docker compose -f docker-compose-be.yml down
+# Ver logs:            docker logs springboot-sqlserver -f
+# Ver logs últimas 50: docker logs springboot-sqlserver --tail 50
+#
+# EC2 Backend: IP_EC2_BACKEND → http://IP_EC2_BACKEND:8085
+# BD SQL Server: 52.5.121.14:1433

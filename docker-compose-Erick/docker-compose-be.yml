@@ -1,0 +1,40 @@
+version: '3'
+
+services:
+  backend:
+    image: erickramoss/farmagro-backend:latest
+    container_name: springboot-sqlserver
+    ports:
+      - "8085:8080"
+    environment:
+      # BD local — apunta al contenedor sql-server de docker-compose-db.yml
+      - SPRING_DATASOURCE_URL=jdbc:sqlserver://sql-server:1433;databaseName=FARMAGRO_SA;encrypt=true;trustServerCertificate=true
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=Admin12345
+      - SPRING_DATASOURCE_DRIVER_CLASS_NAME=com.microsoft.sqlserver.jdbc.SQLServerDriver
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=none
+      # Carpeta de imágenes dentro del contenedor
+      - APP_UPLOAD_DIR=/app/uploads/images/products
+      # Configuración de correo Gmail
+      - SPRING_MAIL_HOST=smtp.gmail.com
+      - SPRING_MAIL_PORT=587
+      - SPRING_MAIL_USERNAME=farmagro828@gmail.com
+      - SPRING_MAIL_PASSWORD=bkpianojdakjdjsu
+    volumes:
+      # Persiste las imágenes subidas aunque el contenedor se reinicie
+      - uploads_data:/app/uploads
+    networks:
+      - my-network
+
+volumes:
+  uploads_data:
+
+networks:
+  my-network:
+    external: true
+
+# ── Comandos útiles ──────────────────────────────────────────────────────────
+# Construir y levantar:   docker compose -f docker-compose-be.yml up -d --build
+# Bajar:                  docker compose -f docker-compose-be.yml down
+# Ver logs:               docker logs springboot-sqlserver -f
+# Ver logs últimas 50:    docker logs springboot-sqlserver --tail 50
